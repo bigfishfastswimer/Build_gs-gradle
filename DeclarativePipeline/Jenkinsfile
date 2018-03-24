@@ -7,6 +7,11 @@ pipeline {
       script{
         checkout scm
       }
+      steps {
+        sh 'if [ ! -d /var/jenkins_home/.gradle ];then \
+         mkdir -p /var/jenkins_home/.gradle; \
+         fi;'
+      }
     }
     stage('test') {
       agent {
