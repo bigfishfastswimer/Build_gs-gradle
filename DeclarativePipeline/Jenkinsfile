@@ -11,9 +11,9 @@ pipeline {
     stage('check') {
       agent any
       steps {
-        sh 'if [ ! -d /var/jenkins_home/.gradle ];then \
-         mkdir -p /var/jenkins_home/.gradle; \
-         fi;'
+        sh 'if [ ! -d ${HOME}/.gradle ];then \
+         mkdir -p ${HOME}/.gradle && chown 1000:1000 ${HOME}/.gradle \
+         fi'
       }
     }
     stage('test') {
@@ -37,6 +37,17 @@ pipeline {
       steps {
         sh 'cd complete && ./gradlew test'
       }
+    }
+  }
+  post {
+    success {
+      emailext(
+        subject: "${env.JOB_NAME} [${env.BUILD_NUMBER}] has completed successfully",
+        body: """<p>'${env.JOB_NAME} [${env.BUILD_NUMBER}]' completed":</p>
+        <p>Check console output at <a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a></p>
+        ${JELLY_SCRIPT,template="html"}'""",
+        to: "fisherhuang1986@gmail.com"
+      )
     }
   }
  }
