@@ -1,0 +1,35 @@
+pipeline {
+  agent none
+
+  stages {
+    agent any
+    stage('prep') {
+      script{
+        checkout scm
+      }
+    }
+    stage('test') {
+      agent {
+        docker {
+          image 'gradle:jdk8'
+          args  '-v ${env.HOME}/.gradle:/home/gradle/.gradle'
+        }
+        steps {
+          sh 'cd complete && ./gradlew test'
+        }
+
+      }
+    }
+    stage('Build') {
+      agent {
+        docker {
+          image 'gradle:jdk8'
+          args  '-v ${env.HOME}/.gradle:/home/gradle/.gradle'
+        }
+      steps {
+        sh 'cd complete && ./gradlew test'
+      }
+    }
+  }
+ }
+}
