@@ -35,11 +35,10 @@ pipeline {
           image 'gradle:jdk8'
           args  '-v ${env.HOME}/.gradle:/home/gradle/.gradle'
         }
+      }
         steps {
           sh 'cd complete && ./gradlew test'
         }
-
-      }
     }
     // build the java app within the same
     stage('Build') {
@@ -48,6 +47,7 @@ pipeline {
           image 'gradle:jdk8'
           args  '-v ${env.HOME}/.gradle:/home/gradle/.gradle'
         }
+      }
       steps {
         sh 'cd complete && ./gradlew run'
       }
