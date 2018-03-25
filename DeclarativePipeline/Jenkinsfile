@@ -1,8 +1,8 @@
-pipeline {
+/var/jenkins_homepipeline {
   agent none
 
   stages {
-    stage('prep') {
+    stage('Prep') {
       agent {
         label 'master'
       }
@@ -12,16 +12,15 @@ pipeline {
 
     }
     // checking the directory
-    stage('check') {
+    stage('Check') {
       agent {
         label 'master'
       }
       steps {
         sh '''
-        if [ ! -d ${HOME}/.gradle ];then
-         mkdir -p ${HOME}/.gradle
-         elif [ `ls -ld /var/jenkins_home/.gradle/ | awk '{print $3}'` != "ubuntu" ];then
-         su -
+        if [ ! -d /var/jenkins_home/.gradle ];then
+         mkdir -p /var/jenkins_home/.gradle
+         elif [ `ls -ld ${HOME}/.gradle/ | awk '{print $3}'` != "ubuntu" ];then
          chown 1000:1000 ${HOME}/.gradle
          else
          echo "Directory is configured!!"
@@ -30,11 +29,11 @@ pipeline {
       }
     }
     // test the java app inside the docker container with gradle script
-    stage('test') {
+    stage('Test') {
       agent {
         docker {
           image 'gradle:jdk8'
-          args  '-v ${env.HOME}/.gradle:/home/gradle/.gradle'
+          args  '-v /var/jenkins_home/.gradle:/home/gradle/.gradle'
         }
       }
         steps {
@@ -46,7 +45,7 @@ pipeline {
       agent {
         docker {
           image 'gradle:jdk8'
-          args  '-v ${env.HOME}/.gradle:/home/gradle/.gradle'
+          args  '-v /var/jenkins_home/.gradle:/home/gradle/.gradle'
         }
       }
       steps {
