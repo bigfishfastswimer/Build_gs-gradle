@@ -21,7 +21,7 @@ pipeline {
         if [ ! -d ${HOME}/.gradle ];then
          mkdir -p ${HOME}/.gradle
          elif [ `ls -ld /var/jenkins_home/.gradle/ | awk '{print $3}'` != "ubuntu" ];then
-         chown 1000:1000 ${HOME}/.gradle
+         sudo chown 1000:1000 ${HOME}/.gradle
          else
          echo "Directory is configured!!"
          fi
