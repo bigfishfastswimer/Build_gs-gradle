@@ -1,4 +1,4 @@
-/var/jenkins_homepipeline {
+pipeline {
   agent none
 
   stages {
