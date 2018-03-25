@@ -51,15 +51,15 @@ pipeline {
       steps {
         sh 'cd complete && ./gradlew run'
       }
-    }
-    // email to me when build stage has completed successfully
-    post {
-      success {
-        emailext(
-          subject: "${env.JOB_NAME} [${env.BUILD_NUMBER}] has completed successfully",
-          body: '${JELLY_SCRIPT,template="html"}',
-          to: "fisherhuang1986@gmail.com"
-        )
+      // email to me when build stage has completed successfully
+      post {
+        success {
+          emailext(
+            subject: "${env.JOB_NAME} [${env.BUILD_NUMBER}] has completed successfully",
+            body: '${JELLY_SCRIPT,template="html"}',
+            to: "fisherhuang1986@gmail.com"
+          )
+        }
       }
     }
   }
